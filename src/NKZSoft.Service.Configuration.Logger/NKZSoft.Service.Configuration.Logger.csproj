@@ -8,8 +8,8 @@
         <AnalysisLevel>latest</AnalysisLevel>
         <RepositoryUrl>https://github.com/nkz-soft/NKZSoft.Service.Configuration.Logger</RepositoryUrl>
         <RepositoryType>git</RepositoryType>
-        <Version>1.0.1</Version>
-        <PackageVersion>1.0.1</PackageVersion>
+        <Version>1.0.2</Version>
+        <PackageVersion>1.0.2</PackageVersion>
         <Description>Provides the configuration for Serilog</Description>
         <Copyright>Copyright © 2022</Copyright>
     </PropertyGroup>
