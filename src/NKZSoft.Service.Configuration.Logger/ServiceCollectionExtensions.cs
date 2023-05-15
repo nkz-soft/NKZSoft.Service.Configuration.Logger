@@ -1,5 +1,7 @@
 namespace NKZSoft.Service.Configuration.Logger;
 
+using System.Globalization;
+
 public static class ServiceCollectionExtensions
 {
     private const string MicroserviceNameProperty = "MicroserviceName";
@@ -8,7 +10,7 @@ public static class ServiceCollectionExtensions
         ArgumentNullException.ThrowIfNull(services);
         ArgumentNullException.ThrowIfNull(configuration);
 
-        var serviceName = Assembly.GetCallingAssembly().GetName().Name;
+        var serviceName = Assembly.GetCallingAssembly().GetName().Name!;
 
         services.AddLogging(loggingBuilder =>
             loggingBuilder.AddSerilog(dispose: true));
@@ -17,7 +19,7 @@ public static class ServiceCollectionExtensions
             .ReadFrom.Configuration(configuration)
             .Enrich.WithProperty(MicroserviceNameProperty, serviceName, true)
             .Enrich.FromLogContext()
-            .WriteTo.Console()
+            .WriteTo.Console(formatProvider:CultureInfo.InvariantCulture)
             .CreateLogger();
 
         Log.Logger = logger;
