@@ -5,6 +5,7 @@ using System.Globalization;
 public static class ServiceCollectionExtensions
 {
     private const string MicroserviceNameProperty = "MicroserviceName";
+
     public static IServiceCollection AddLogging(this IServiceCollection services, IConfiguration configuration)
     {
         ArgumentNullException.ThrowIfNull(services);
@@ -19,6 +20,7 @@ public static class ServiceCollectionExtensions
             .ReadFrom.Configuration(configuration)
             .Enrich.WithProperty(MicroserviceNameProperty, serviceName, true)
             .Enrich.FromLogContext()
+            .Enrich.WithCorrelationIdHeader(Constants.Headers.CorrelationId)
             .WriteTo.Console(formatProvider:CultureInfo.InvariantCulture)
             .CreateLogger();
 
