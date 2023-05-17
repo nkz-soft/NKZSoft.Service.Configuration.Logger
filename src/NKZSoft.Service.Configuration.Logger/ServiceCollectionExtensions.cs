@@ -1,11 +1,15 @@
 namespace NKZSoft.Service.Configuration.Logger;
 
-using System.Globalization;
-
 public static class ServiceCollectionExtensions
 {
     private const string MicroserviceNameProperty = "MicroserviceName";
 
+    /// <summary>
+    /// Add Serilog to the logging pipeline.
+    /// </summary>
+    /// <param name="services">The <see cref="IServiceCollection"/> to add the service to.</param>
+    /// <param name="configuration">The <see cref="IConfiguration"/> containing settings to be used.</param>
+    /// <returns>A reference to this instance after the operation has completed.</returns>
     public static IServiceCollection AddLogging(this IServiceCollection services, IConfiguration configuration)
     {
         ArgumentNullException.ThrowIfNull(services);
