@@ -3,8 +3,7 @@
     <PropertyGroup>
         <TargetFrameworks>net6.0;net7.0;net8.0</TargetFrameworks>
         <RepositoryUrl>https://github.com/nkz-soft/NKZSoft.Service.Configuration.Logger</RepositoryUrl>
-        <Version>1.3.1</Version>
-        <PackageVersion>1.3.1</PackageVersion>
+        <Version>1.3.2</Version>
         <Description>Provides the configuration for Serilog</Description>
         <Copyright>Copyright © 2024</Copyright>
     </PropertyGroup>
