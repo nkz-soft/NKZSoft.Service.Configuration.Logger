@@ -1,8 +1,12 @@
 namespace NKZSoft.Service.Configuration.Logger;
 
+/// <summary>
+/// Extension methods for <see cref="IServiceCollection"/>
+/// </summary>
 public static class ServiceCollectionExtensions
 {
     private const string MicroserviceNameProperty = "MicroserviceName";
+    private const string CorrelationId = "X-Correlation-Id";
 
     /// <summary>
     /// Add Serilog to the logging pipeline.
@@ -15,24 +19,27 @@ public static class ServiceCollectionExtensions
         ArgumentNullException.ThrowIfNull(services);
         ArgumentNullException.ThrowIfNull(configuration);
 
-        var serviceName = Assembly.GetCallingAssembly().GetName().Name!;
+        var serviceName = Assembly.GetCallingAssembly().GetName().Name;
 
         services.AddLogging(loggingBuilder =>
             loggingBuilder.AddSerilog(dispose: true));
 
         var logger = new LoggerConfiguration()
             .ReadFrom.Configuration(configuration)
-            .Enrich.WithProperty(MicroserviceNameProperty, serviceName, true)
+            .Enrich.WithProperty(MicroserviceNameProperty, serviceName, destructureObjects: true)
             .Enrich.FromLogContext()
-            .Enrich.WithCorrelationIdHeader(Constants.Headers.CorrelationId)
-            .WriteTo.Console(formatProvider:CultureInfo.InvariantCulture)
+            .Enrich.WithCorrelationIdHeader(CorrelationId)
+            .WriteTo.Console(formatProvider: CultureInfo.InvariantCulture)
             .CreateLogger();
 
         Log.Logger = logger;
 
-        var loggerFactory = new LoggerFactory();
-        loggerFactory.AddSerilog(logger);
-        services.AddSingleton<ILoggerFactory>(loggerFactory);
+        services.AddSingleton<ILoggerFactory>(_ =>
+        {
+            var factory = new LoggerFactory();
+            factory.AddSerilog(logger);
+            return factory;
+        });
 
         return services;
     }
